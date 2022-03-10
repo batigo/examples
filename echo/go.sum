@@ -1,0 +1,12 @@
+github.com/batigo/baticli-go v0.0.0-20220310151422-ea4dd36e1d02 h1:ZptAtTkDLZbKVUAzOdyBsleweYQzvZ4q+Wz8ll5E7Ag=
+github.com/batigo/baticli-go v0.0.0-20220310151422-ea4dd36e1d02/go.mod h1:BS1GOuaFMIkEObDp+xBW9nHzdhK7KiybvQdIrU/Pl7A=
+github.com/batigo/baticli-go v0.0.0-20220310152534-1ce43b2b620b h1:vdrjOYjUuYwNd8xAVigbJSj0LP3PNQrFJSFm3VXXJOg=
+github.com/batigo/baticli-go v0.0.0-20220310152534-1ce43b2b620b/go.mod h1:BS1GOuaFMIkEObDp+xBW9nHzdhK7KiybvQdIrU/Pl7A=
+github.com/batigo/baticli-go v0.0.0-20220310152843-e69452098a9a h1:UvU9RDm4X8sZBnDrBHLtt7QQ84/Smj/AUKfcYhQ+76M=
+github.com/batigo/baticli-go v0.0.0-20220310152843-e69452098a9a/go.mod h1:BS1GOuaFMIkEObDp+xBW9nHzdhK7KiybvQdIrU/Pl7A=
+github.com/gorilla/websocket v1.5.0 h1:PPwGk2jz7EePpoHN/+ClbZu8SPxiqlu12wZP/3sWmnc=
+github.com/gorilla/websocket v1.5.0/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
+github.com/hashicorp/go-uuid v1.0.2 h1:cfejS+Tpcp13yd5nYHWDI6qVCny6wyX2Mt5SGur2IGE=
+github.com/hashicorp/go-uuid v1.0.2/go.mod h1:6SBZvOh/SIDV7/2o3Jml5SYk/TvGqwFJ/bN7x4byOro=
+github.com/klauspost/compress v1.14.4 h1:eijASRJcobkVtSt81Olfh7JX43osYLwy5krOJo6YEu4=
+github.com/klauspost/compress v1.14.4/go.mod h1:/3/Vjq9QcHkK5uEr5lBEmyoZ1iFhe47etQ6QUkpK6sk=
