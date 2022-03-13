@@ -15,7 +15,7 @@ func main() {
 	conf := bati.PostmanConf{
 		Servcie: "chat",
 		Kafka: &bati.KafkaSt{
-			Hostports: "",
+			Hostports: "192.168.2.107:9092",
 			GroupId:   "chat",
 			Readers:   1,
 			Writers:   1,

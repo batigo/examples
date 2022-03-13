@@ -2,11 +2,13 @@ module bati-chat
 
 go 1.17
 
-require github.com/batigo/baticli-go v0.0.0-20220313051505-eadd24e04028
+require (
+	github.com/batigo/bati-go v0.0.0-20220313140339-6fb28891fa41
+	github.com/batigo/baticli-go v0.0.0-20220313051505-eadd24e04028
+)
 
 require (
 	github.com/Shopify/sarama v1.32.0 // indirect
-	github.com/batigo/bati-go v0.0.0-20220313120538-e441e4c9fee9 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/eapache/go-resiliency v1.2.0 // indirect
 	github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21 // indirect
