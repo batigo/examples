@@ -45,11 +45,11 @@ type ChatServer struct {
 func (cs *ChatServer) msgHandler(msg bati.BatiMsg, service string) (err error) {
 	switch msg.Type {
 	case bati.BatiMsgTypeBiz:
-		var chatMsg proto.ChatMsgRecv
+		chatMsg := &proto.ChatMsgRecv{}
 		chatMsg.Decode(msg.Data)
 		switch chatMsg.Type {
 		case proto.MsgTypeJoinRoom:
-			var data proto.JoinRoomData
+			var data = &proto.JoinRoomData{}
 			data.Decode(chatMsg.Data)
 			cs.users[msg.Cid] = data.Name
 			cs.rooms[msg.Cid] = data.Room
@@ -62,7 +62,7 @@ func (cs *ChatServer) msgHandler(msg bati.BatiMsg, service string) (err error) {
 			}, 100, nil, []string{data.Uid})
 
 		case proto.MsgTypeQuitRoom:
-			var data proto.QuitRoomData
+			var data = &proto.QuitRoomData{}
 			data.Decode(chatMsg.Data)
 			defer delete(cs.rooms, msg.Cid)
 			defer delete(cs.users, msg.Cid)
@@ -75,7 +75,7 @@ func (cs *ChatServer) msgHandler(msg bati.BatiMsg, service string) (err error) {
 			}, 100, nil, []string{data.Uid})
 
 		case proto.MsgTypeChat:
-			var data proto.ChatData
+			var data = &proto.ChatData{}
 			data.Decode(msg.Data)
 			if data.Name == "" {
 				data.Name = cs.users[msg.Cid]
