@@ -2,7 +2,7 @@ module bati-chat
 
 go 1.17
 
-require github.com/batigo/baticli-go v0.0.0-20220310152843-e69452098a9a
+require github.com/batigo/baticli-go v0.0.0-20220313051505-eadd24e04028
 
 require (
 	github.com/gorilla/websocket v1.5.0 // indirect

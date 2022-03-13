@@ -34,7 +34,7 @@ func main() {
 		Compressor: baticli.CompressorType(compressor),
 		BinaryMsg:  false,
 	}
-	cli, sendmsgFunc, err := baticli.NewConn(context.Background(), conf)
+	cli, sendMsgFunc, err := baticli.NewConn(context.Background(), conf)
 	if err != nil {
 		panic(err)
 	}
@@ -50,7 +50,7 @@ func main() {
 		case baticli.ClientMsgTypeEcho:
 			log.Printf("=== recv echo, id: %s, data: %s", msg.Id, msg.Data)
 		default:
-			log.Printf("recv unknown msg, type: %d\n", msg.Type)
+			log.Printf("11111 recv unknown msg, type: %d\n", msg.Type)
 		}
 	})
 
@@ -60,7 +60,7 @@ func main() {
 	}
 
 	for i := 0; i < 100; i++ {
-		sendmsgFunc(baticli.ClientMsgSend{
+		sendMsgFunc(baticli.ClientMsgSend{
 			Id:        baticli.Genmsgid(),
 			Type:      baticli.ClientMsgTypeEcho,
 			Ack:       1,

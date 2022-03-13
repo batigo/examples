@@ -90,35 +90,38 @@ func main() {
 		panic(err)
 	}
 
-	joinmsg := proto.ChatMsgSend{
+	joinMsg := proto.ChatMsgSend{
 		Type: proto.MsgTypeJoinRoom,
-		Data: proto.JoinRoomData{Id: room, Name: name},
+		Data: proto.JoinRoomData{Room: room, Name: name, Uid: uid},
 	}
 	sendmsgFunc(baticli.ClientMsgSend{
 		Id:        baticli.Genmsgid(),
 		Type:      baticli.ClientMsgTypeBiz,
 		Ack:       1,
 		ServiceId: "chat",
-		Data:      joinmsg,
+		Data:      joinMsg,
 	})
 
 	for i := 0; i < 30+randd.Intn(20); i++ {
-		chatmsg := proto.ChatMsgSend{
-			Type: proto.MsgTypeChat,
-			Data: proto.ChatData{Name: name, Msg: fmt.Sprintf("msg-%d", i)},
-		}
 		sendmsgFunc(baticli.ClientMsgSend{
 			Id:        baticli.Genmsgid(),
 			Type:      baticli.ClientMsgTypeBiz,
 			Ack:       1,
 			ServiceId: "chat",
-			Data:      chatmsg,
+			Data: proto.ChatMsgSend{
+				Type: proto.MsgTypeChat,
+				Data: proto.ChatData{
+					Uid:  uid,
+					Room: room,
+					Msg:  fmt.Sprintf("msg-%d", i),
+				},
+			},
 		})
 	}
 
 	quitmsg := proto.ChatMsgSend{
 		Type: proto.MsgTypeQuitRoom,
-		Data: proto.QuitRoomData{Id: room, Name: name},
+		Data: proto.QuitRoomData{Room: room, Name: name, Uid: uid},
 	}
 	sendmsgFunc(baticli.ClientMsgSend{
 		Id:        baticli.Genmsgid(),
