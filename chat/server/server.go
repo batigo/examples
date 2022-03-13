@@ -53,26 +53,28 @@ func (cs *ChatServer) msgHandler(msg bati.BatiMsg, service string) (err error) {
 			data.Decode(chatMsg.Data)
 			cs.users[msg.Cid] = data.Name
 			cs.rooms[msg.Cid] = data.Room
+			cs.postman.SendConnJoinMsg(msg.Cid, []string{data.Room}, true)
 			return cs.postman.SendRoomBizMsgCond(data.Room, proto.ChatMsgSend{
 				Type: proto.MsgTypeJoinRoom,
 				Data: proto.JoinRoomData{
 					Room: data.Room,
 					Name: data.Name,
 				},
-			}, 100, nil, []string{data.Uid})
+			}, 100, nil, nil)
 
 		case proto.MsgTypeQuitRoom:
 			var data = &proto.QuitRoomData{}
 			data.Decode(chatMsg.Data)
 			defer delete(cs.rooms, msg.Cid)
 			defer delete(cs.users, msg.Cid)
+			cs.postman.SendConnQuitMsg(msg.Cid, []string{data.Room}, true)
 			return cs.postman.SendRoomBizMsgCond(data.Room, proto.ChatMsgSend{
 				Type: proto.MsgTypeQuitRoom,
 				Data: proto.QuitRoomData{
 					Room: data.Room,
 					Name: data.Name,
 				},
-			}, 100, nil, []string{data.Uid})
+			}, 100, nil, nil)
 
 		case proto.MsgTypeChat:
 			var data = &proto.ChatData{}
@@ -84,7 +86,7 @@ func (cs *ChatServer) msgHandler(msg bati.BatiMsg, service string) (err error) {
 				Type: proto.MsgTypeChat,
 				// chat-server广播消息
 				Data: data,
-			}, 100, nil, []string{data.Uid})
+			}, 100, nil, nil)
 		}
 
 	case bati.BatiMsgTypeConnQuit:
