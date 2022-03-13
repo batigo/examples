@@ -78,7 +78,7 @@ func (cs *ChatServer) msgHandler(msg bati.BatiMsg, service string) (err error) {
 
 		case proto.MsgTypeChat:
 			var data = &proto.ChatData{}
-			data.Decode(msg.Data)
+			data.Decode(chatMsg.Data)
 			if data.Name == "" {
 				data.Name = cs.users[msg.Cid]
 			}
