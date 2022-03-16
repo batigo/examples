@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/batigo/bati-go v0.0.0-20220313140339-6fb28891fa41
-	github.com/batigo/baticli-go v0.0.0-20220313051505-eadd24e04028
+	github.com/batigo/baticli-go v0.0.0-20220316041232-e6ee7d527467
 )
 
 require (
@@ -26,4 +26,5 @@ require (
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	golang.org/x/crypto v0.0.0-20220214200702-86341886e292 // indirect
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
+	google.golang.org/protobuf v1.27.1 // indirect
 )

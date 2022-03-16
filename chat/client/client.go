@@ -33,7 +33,7 @@ func main() {
 	flag.StringVar(&uid, "uid", "", "user id")
 	flag.StringVar(&compressor, "compressor", "null", "compressor type: null | deflate ")
 	flag.StringVar(&room, "room", "room1", "join room id")
-	flag.StringVar(&name, "name", "name1", "user name")
+	flag.StringVar(&name, "name", "name1222", "user name")
 	flag.IntVar(&dt, "dt", 1, "device type ")
 	flag.Parse()
 
@@ -92,7 +92,11 @@ func main() {
 
 	joinMsg := proto.ChatMsgSend{
 		Type: proto.MsgTypeJoinRoom,
-		Data: proto.JoinRoomData{Room: room, Name: name, Uid: uid},
+		Data: proto.JoinRoomData{
+			Room: room,
+			Name: name,
+			Uid:  uid,
+		},
 	}
 	sendmsgFunc(baticli.ClientMsgSend{
 		Id:        baticli.Genmsgid(),
@@ -117,6 +121,7 @@ func main() {
 				},
 			},
 		})
+		time.Sleep(time.Second * 5)
 	}
 
 	quitmsg := proto.ChatMsgSend{
