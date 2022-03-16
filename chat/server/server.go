@@ -3,6 +3,7 @@ package main
 import (
 	"bati-chat/proto"
 	"github.com/batigo/bati-go"
+	"log"
 )
 
 func main() {
@@ -45,6 +46,7 @@ type ChatServer struct {
 func (cs *ChatServer) msgHandler(msg bati.BatiMsg, service string) (err error) {
 	switch msg.Type {
 	case bati.BatiMsgTypeBiz:
+		log.Printf("recv biz msg: %s- %s", msg.Id, msg.Data)
 		chatMsg := &proto.ChatMsgRecv{}
 		chatMsg.Decode(msg.Data)
 		switch chatMsg.Type {
@@ -90,6 +92,7 @@ func (cs *ChatServer) msgHandler(msg bati.BatiMsg, service string) (err error) {
 		}
 
 	case bati.BatiMsgTypeConnQuit:
+		log.Printf("recv conn-quit msg: %s", msg.Id)
 		cid := msg.Cid
 		defer delete(cs.rooms, cid)
 		defer delete(cs.users, cid)

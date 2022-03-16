@@ -40,9 +40,9 @@ func main() {
 	flag.IntVar(&dt, "dt", 1, "device type ")
 	flag.Parse()
 
-	com := baticli.Compressor_Null
+	com := baticli.CompressorType_Null
 	if compressor == "deflate" {
-		com = baticli.Compressor_Deflate
+		com = baticli.CompressorType_Deflate
 	}
 
 	conf := baticli.ConnConfig{
@@ -127,7 +127,6 @@ func main() {
 		sendmsgFunc(&baticli.ClientMsg{
 			Id:        baticli.Genmsgid(),
 			Type:      baticli.ClientMsgType_Biz,
-			Ack:       1,
 			ServiceId: &service,
 			BizData:   bs,
 		})

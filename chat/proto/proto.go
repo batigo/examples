@@ -59,7 +59,7 @@ type ChatMsgRecv struct {
 	Data json.RawMessage `json:"data"`
 }
 
-func (d *ChatMsgRecv) Decode(bs json.RawMessage) {
+func (d *ChatMsgRecv) Decode(bs []byte) {
 	json.Unmarshal(bs, d)
 }
 

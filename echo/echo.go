@@ -24,9 +24,9 @@ func main() {
 	flag.IntVar(&dt, "dt", 1, "device type ")
 	flag.Parse()
 
-	com := baticli.Compressor_Null
+	com := baticli.CompressorType_Null
 	if compressor == "deflate" {
-		com = baticli.Compressor_Deflate
+		com = baticli.CompressorType_Deflate
 	}
 
 	conf := baticli.ConnConfig{
@@ -55,7 +55,7 @@ func main() {
 		case baticli.ClientMsgType_Echo:
 			log.Printf("=== recv echo, id: %s, data: %s", msg.Id, msg.BizData)
 		default:
-			log.Printf("11111 recv unknown msg, type: %d\n", msg.Type)
+			log.Printf("=== recv unknown msg, type: %d\n", msg.Type)
 		}
 	})
 
