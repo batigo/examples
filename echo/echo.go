@@ -24,6 +24,11 @@ func main() {
 	flag.IntVar(&dt, "dt", 1, "device type ")
 	flag.Parse()
 
+	com := baticli.Compressor_Null
+	if compressor == "deflate" {
+		com = baticli.Compressor_Deflate
+	}
+
 	conf := baticli.ConnConfig{
 		Url:        url,
 		Uid:        uid,
@@ -31,7 +36,7 @@ func main() {
 		Dt:         baticli.DeviceType(dt),
 		Timeout:    time.Second * 5,
 		HeartBeat:  time.Second * 60,
-		Compressor: baticli.CompressorType(compressor),
+		Compressor: com,
 		BinaryMsg:  false,
 	}
 	cli, sendMsgFunc, err := baticli.NewConn(context.Background(), conf)
@@ -43,12 +48,12 @@ func main() {
 		cli.Close()
 	})
 
-	cli.SetRecvMsgHandler(func(msg baticli.ClientMsgRecv) {
+	cli.SetRecvMsgHandler(func(msg *baticli.ClientMsg) {
 		switch msg.Type {
-		case baticli.ClientMsgTypeAck:
+		case baticli.ClientMsgType_Ack:
 			log.Printf("=== recv ack msg, id: %s\n", msg.Id)
-		case baticli.ClientMsgTypeEcho:
-			log.Printf("=== recv echo, id: %s, data: %s", msg.Id, msg.Data)
+		case baticli.ClientMsgType_Echo:
+			log.Printf("=== recv echo, id: %s, data: %s", msg.Id, msg.BizData)
 		default:
 			log.Printf("11111 recv unknown msg, type: %d\n", msg.Type)
 		}
@@ -60,12 +65,11 @@ func main() {
 	}
 
 	for i := 0; i < 100; i++ {
-		sendMsgFunc(baticli.ClientMsgSend{
-			Id:        baticli.Genmsgid(),
-			Type:      baticli.ClientMsgTypeEcho,
-			Ack:       1,
-			ServiceId: "chat",
-			Data:      fmt.Sprintf("msg-%d", i),
+		sendMsgFunc(&baticli.ClientMsg{
+			Id:      baticli.Genmsgid(),
+			Type:    baticli.ClientMsgType_Echo,
+			Ack:     1,
+			BizData: []byte(fmt.Sprintf("msg-%d", i)),
 		})
 		time.Sleep(time.Second)
 	}

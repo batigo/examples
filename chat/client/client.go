@@ -3,6 +3,7 @@ package main
 import (
 	"bati-chat/proto"
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -18,6 +19,8 @@ var randd *rand.Rand
 func init() {
 	randd = rand.New(rand.NewSource(int64(os.Getpid())))
 }
+
+var service = "chat"
 
 func main() {
 	var did string
@@ -37,6 +40,11 @@ func main() {
 	flag.IntVar(&dt, "dt", 1, "device type ")
 	flag.Parse()
 
+	com := baticli.Compressor_Null
+	if compressor == "deflate" {
+		com = baticli.Compressor_Deflate
+	}
+
 	conf := baticli.ConnConfig{
 		Url:        url,
 		Uid:        uid,
@@ -44,7 +52,7 @@ func main() {
 		Dt:         baticli.DeviceType(dt),
 		Timeout:    time.Second * 5,
 		HeartBeat:  time.Second * 60,
-		Compressor: baticli.CompressorType(compressor),
+		Compressor: com,
 		BinaryMsg:  false,
 	}
 	cli, sendmsgFunc, err := baticli.NewConn(context.Background(), conf)
@@ -59,13 +67,13 @@ func main() {
 		cli.Close()
 	})
 
-	cli.SetRecvMsgHandler(func(msg baticli.ClientMsgRecv) {
+	cli.SetRecvMsgHandler(func(msg *baticli.ClientMsg) {
 		switch msg.Type {
-		case baticli.ClientMsgTypeAck:
+		case baticli.ClientMsgType_Ack:
 			log.Printf("=== recv ack msg, id: %s\n", msg.Id)
-		case baticli.ClientMsgTypeBiz:
+		case baticli.ClientMsgType_Biz:
 			chatMsg := &proto.ChatMsgRecv{}
-			chatMsg.Decode(msg.Data)
+			chatMsg.Decode(msg.BizData)
 			switch chatMsg.Type {
 			case proto.MsgTypeJoinRoom:
 				var join proto.JoinRoomData
@@ -98,28 +106,30 @@ func main() {
 			Uid:  uid,
 		},
 	}
-	sendmsgFunc(baticli.ClientMsgSend{
+	bs, _ := json.Marshal(joinMsg)
+	sendmsgFunc(&baticli.ClientMsg{
 		Id:        baticli.Genmsgid(),
-		Type:      baticli.ClientMsgTypeBiz,
+		Type:      baticli.ClientMsgType_Biz,
 		Ack:       1,
-		ServiceId: "chat",
-		Data:      joinMsg,
+		ServiceId: &service,
+		BizData:   bs,
 	})
 
 	for i := 0; i < 30+randd.Intn(20); i++ {
-		sendmsgFunc(baticli.ClientMsgSend{
-			Id:        baticli.Genmsgid(),
-			Type:      baticli.ClientMsgTypeBiz,
-			Ack:       1,
-			ServiceId: "chat",
-			Data: proto.ChatMsgSend{
-				Type: proto.MsgTypeChat,
-				Data: proto.ChatData{
-					Uid:  uid,
-					Room: room,
-					Msg:  fmt.Sprintf("msg-%d", i),
-				},
+		bs, _ = json.Marshal(proto.ChatMsgSend{
+			Type: proto.MsgTypeChat,
+			Data: proto.ChatData{
+				Uid:  uid,
+				Room: room,
+				Msg:  fmt.Sprintf("msg-%d", i),
 			},
+		})
+		sendmsgFunc(&baticli.ClientMsg{
+			Id:        baticli.Genmsgid(),
+			Type:      baticli.ClientMsgType_Biz,
+			Ack:       1,
+			ServiceId: &service,
+			BizData:   bs,
 		})
 		time.Sleep(time.Second * 5)
 	}
@@ -128,12 +138,13 @@ func main() {
 		Type: proto.MsgTypeQuitRoom,
 		Data: proto.QuitRoomData{Room: room, Name: name, Uid: uid},
 	}
-	sendmsgFunc(baticli.ClientMsgSend{
+	bs, _ = json.Marshal(quitmsg)
+	sendmsgFunc(&baticli.ClientMsg{
 		Id:        baticli.Genmsgid(),
-		Type:      baticli.ClientMsgTypeBiz,
+		Type:      baticli.ClientMsgType_Biz,
 		Ack:       1,
-		ServiceId: "chat",
-		Data:      quitmsg,
+		ServiceId: &service,
+		BizData:   bs,
 	})
 	cli.Close()
 }
