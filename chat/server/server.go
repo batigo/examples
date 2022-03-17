@@ -44,43 +44,66 @@ type ChatServer struct {
 }
 
 func (cs *ChatServer) msgHandler(msg bati.BatiMsg, service string) (err error) {
+	defer func() {
+		if err != nil {
+			panic(err)
+		}
+	}()
 	switch msg.Type {
 	case bati.BatiMsgTypeBiz:
 		log.Printf("recv biz msg: %s- %s", msg.Id, msg.Data)
 		chatMsg := &proto.ChatMsgRecv{}
-		chatMsg.Decode(msg.Data)
+		err = chatMsg.Decode(msg.Data)
+		if err != nil {
+			return
+		}
 		switch chatMsg.Type {
 		case proto.MsgTypeJoinRoom:
 			var data = &proto.JoinRoomData{}
-			data.Decode(chatMsg.Data)
+			err = data.Decode(chatMsg.Data)
+			if err != nil {
+				return
+			}
 			cs.users[msg.Cid] = data.Name
 			cs.rooms[msg.Cid] = data.Room
-			cs.postman.SendConnJoinMsg(msg.Cid, []string{data.Room}, true)
+			err = cs.postman.SendConnJoinMsg(msg.Cid, []string{data.Room}, true)
+			if err != nil {
+				return
+			}
 			return cs.postman.SendRoomBizMsgCond(data.Room, proto.ChatMsgSend{
 				Type: proto.MsgTypeJoinRoom,
 				Data: proto.JoinRoomData{
 					Room: data.Room,
 					Name: data.Name,
 				},
-			}, 100, nil, nil)
+			}, 100, nil, []string{msg.Uid})
 
 		case proto.MsgTypeQuitRoom:
 			var data = &proto.QuitRoomData{}
-			data.Decode(chatMsg.Data)
+			err = data.Decode(chatMsg.Data)
+			if err != nil {
+				return
+			}
 			defer delete(cs.rooms, msg.Cid)
 			defer delete(cs.users, msg.Cid)
-			cs.postman.SendConnQuitMsg(msg.Cid, []string{data.Room}, true)
+			err = cs.postman.SendConnQuitMsg(msg.Cid, []string{data.Room}, true)
+			if err != nil {
+				return
+			}
 			return cs.postman.SendRoomBizMsgCond(data.Room, proto.ChatMsgSend{
 				Type: proto.MsgTypeQuitRoom,
 				Data: proto.QuitRoomData{
 					Room: data.Room,
 					Name: data.Name,
 				},
-			}, 100, nil, nil)
+			}, 100, nil, []string{msg.Uid})
 
 		case proto.MsgTypeChat:
 			var data = &proto.ChatData{}
-			data.Decode(chatMsg.Data)
+			err = data.Decode(chatMsg.Data)
+			if err != nil {
+				return
+			}
 			if data.Name == "" {
 				data.Name = cs.users[msg.Cid]
 			}
@@ -88,12 +111,13 @@ func (cs *ChatServer) msgHandler(msg bati.BatiMsg, service string) (err error) {
 				Type: proto.MsgTypeChat,
 				// chat-server广播消息
 				Data: data,
-			}, 100, nil, nil)
+			}, 100, nil, []string{msg.Uid})
 		}
 
 	case bati.BatiMsgTypeConnQuit:
 		log.Printf("recv conn-quit msg: %s", msg.Id)
 		cid := msg.Cid
+
 		defer delete(cs.rooms, cid)
 		defer delete(cs.users, cid)
 		room, ok := cs.rooms[cid]

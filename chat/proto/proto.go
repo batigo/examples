@@ -18,7 +18,7 @@ type JoinRoomData struct {
 }
 
 func (d *JoinRoomData) String() string {
-	return fmt.Sprintf("[join] from: %s", d.Name)
+	return fmt.Sprintf("[join] room:%s, from: %s", d.Room, d.Name)
 }
 
 func (d *JoinRoomData) Decode(bs json.RawMessage) error {
@@ -32,7 +32,7 @@ type QuitRoomData struct {
 }
 
 func (d *QuitRoomData) String() string {
-	return fmt.Sprintf("[quit] from: %s", d.Name)
+	return fmt.Sprintf("[quit] room:%s, from: %s", d.Room, d.Name)
 }
 
 func (d *QuitRoomData) Decode(bs json.RawMessage) error {
@@ -59,8 +59,8 @@ type ChatMsgRecv struct {
 	Data json.RawMessage `json:"data"`
 }
 
-func (d *ChatMsgRecv) Decode(bs []byte) {
-	json.Unmarshal(bs, d)
+func (d *ChatMsgRecv) Decode(bs []byte) error {
+	return json.Unmarshal(bs, d)
 }
 
 type ChatMsgSend struct {
