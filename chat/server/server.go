@@ -50,7 +50,7 @@ func (cs *ChatServer) msgHandler(msg bati.BatiMsg, service string) (err error) {
 		}
 	}()
 	switch msg.Type {
-	case bati.BatiMsgTypeBiz:
+	case bati.BatiMsg_Biz:
 		log.Printf("recv biz msg: %s- %s", msg.Id, msg.Data)
 		chatMsg := &proto.ChatMsgRecv{}
 		err = chatMsg.Decode(msg.Data)
@@ -114,7 +114,7 @@ func (cs *ChatServer) msgHandler(msg bati.BatiMsg, service string) (err error) {
 			}, 100, nil, []string{msg.Uid})
 		}
 
-	case bati.BatiMsgTypeConnQuit:
+	case bati.BatiMsg_ConnQuit:
 		log.Printf("recv conn-quit msg: %s", msg.Id)
 		cid := msg.Cid
 
