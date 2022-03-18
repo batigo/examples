@@ -72,7 +72,6 @@ func main() {
 		case baticli.ClientMsgType_Ack:
 			log.Printf("=== recv ack msg, id: %s\n", msg.Id)
 		case baticli.ClientMsgType_Biz:
-			log.Printf("00000 %s", msg.BizData)
 			chatMsg := &proto.ChatMsgRecv{}
 			chatMsg.Decode(msg.BizData)
 			switch chatMsg.Type {

@@ -111,7 +111,7 @@ func (cs *ChatServer) msgHandler(msg bati.BatiMsg, service string) (err error) {
 				Type: proto.MsgTypeChat,
 				// chat-server广播消息
 				Data: data,
-			}, 100, nil, []string{msg.Uid})
+			}, 30, nil, []string{msg.Uid})
 		}
 
 	case bati.BatiMsg_ConnQuit:

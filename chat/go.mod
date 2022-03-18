@@ -3,7 +3,7 @@ module bati-chat
 go 1.17
 
 require (
-	github.com/batigo/bati-go v0.0.2-0.20220318130054-8aaa8a074a72
+	github.com/batigo/bati-go v0.0.2-0.20220318132514-6d9b4b469f1e
 	github.com/batigo/baticli-go v0.0.0-20220316150830-7c0fffbc022b
 )
 

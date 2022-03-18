@@ -3,8 +3,8 @@ github.com/Shopify/sarama v1.32.0 h1:P+RUjEaRU0GMMbYexGMDyrMkLhbbBVUVISDywi+IlFU
 github.com/Shopify/sarama v1.32.0/go.mod h1:+EmJJKZWVT/faR9RcOxJerP+LId4iWdQPBGLy1Y1Njs=
 github.com/Shopify/toxiproxy/v2 v2.3.0 h1:62YkpiP4bzdhKMH+6uC5E95y608k3zDwdzuBMsnn3uQ=
 github.com/Shopify/toxiproxy/v2 v2.3.0/go.mod h1:KvQTtB6RjCJY4zqNJn7C7JDFgsG5uoHYDirfUfpIm0c=
-github.com/batigo/bati-go v0.0.2-0.20220318130054-8aaa8a074a72 h1:K3LFg/TYlj9wsd4Ds5fl5H5rQLHHfo2coh9dO28xS9A=
-github.com/batigo/bati-go v0.0.2-0.20220318130054-8aaa8a074a72/go.mod h1:5OVcKCNp6EyqL+LuG0yRT4Ma7nod8c2G5BiTLfNcznM=
+github.com/batigo/bati-go v0.0.2-0.20220318132514-6d9b4b469f1e h1:pS9Bkx302+blMp5ow+P1cJ1wmmLVqUtOIEh9LmNZjIk=
+github.com/batigo/bati-go v0.0.2-0.20220318132514-6d9b4b469f1e/go.mod h1:5OVcKCNp6EyqL+LuG0yRT4Ma7nod8c2G5BiTLfNcznM=
 github.com/batigo/baticli-go v0.0.0-20220316150830-7c0fffbc022b h1:QQmZquspIq+IfcMbxGliydqZ98GHqzoKZu+gRkbsw9w=
 github.com/batigo/baticli-go v0.0.0-20220316150830-7c0fffbc022b/go.mod h1:U/Tor9XVlx82ij4cNxSZZ/Y5rRDE/6GyEDB20EkNTGY=
 github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d/go.mod h1:maD7wRr/U5Z6m/iR4s+kqSMx2CaBsrgA7czyZG/E6dU=
