@@ -2,7 +2,6 @@ package main
 
 import (
 	"bati-chat/proto"
-	"github.com/batigo/bati-go"
 	"log"
 )
 
@@ -44,11 +43,6 @@ type ChatServer struct {
 }
 
 func (cs *ChatServer) msgHandler(msg bati.BatiMsg, service string) (err error) {
-	defer func() {
-		if err != nil {
-			panic(err)
-		}
-	}()
 	switch msg.Type {
 	case bati.BatiMsg_Biz:
 		log.Printf("recv biz msg: %s- %s", msg.Id, msg.Data)
